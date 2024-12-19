@@ -143,6 +143,168 @@ title: Welcome Language Exploration
                 </div>
             </section>
 
+            <!-- Multilingual Riddle Master Section -->
+            <section id="riddle-master" class="my-5">
+                <h2>Multilingual Riddle Master</h2>
+                <div class="riddle-container">
+                    <h1>🧩 Riddle Master</h1>
+                    
+                    <div class="language-selector">
+                        <label for="languageSelect">Select Language:</label>
+                        <select id="languageSelect">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+
+                    <div class="difficulty-selector">
+                        <label for="difficultySelect">Select Difficulty:</label>
+                        <select id="difficultySelect">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+
+                    <div id="riddleText">Press "Generate Riddle" to start!</div>
+                    
+                    <input 
+                        type="text" 
+                        id="answerInput" 
+                        placeholder="Type your answer here" 
+                        style="display:none;"
+                    >
+                    
+                    <div>
+                        <button id="generateBtn" class="btn btn-primary">Generate Riddle</button>
+                        <button id="submitBtn" class="btn btn-primary" style="display:none;">Submit Answer</button>
+                    </div>
+
+                    <div id="resultMessage"></div>
+                    
+                    <div style="margin-top: 20px;">
+                        <a href="scratch-page.html" class="btn btn-secondary">Back to Scratch Page</a>
+                    </div>
+
+                    <div class="nested-lists">
+                        <h2>Why Solve Riddles?</h2>
+                        <ol>
+                            <li>Mental Exercise
+                                <ul>
+                                    <li>Improves cognitive abilities</li>
+                                    <li>Enhances problem-solving skills</li>
+                                </ul>
+                            </li>
+                            <li>Language Skills
+                                <ul>
+                                    <li>Expands vocabulary</li>
+                                    <li>Improves comprehension</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="image-container">
+                        <img src="https://example.com/riddle-image.jpg" alt="Riddle Illustration" width="100%">
+                    </div>
+
+                    <div class="video-container">
+                        <h3>Learn About Riddles</h3>
+                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/some-video-id" title="Riddles" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+
+                    <div class="on-page-anchor">
+                        <a href="#riddleText" class="btn btn-primary">Go to Riddle</a>
+                    </div>
+                </div>
+
+                <script>
+                    // Multilingual Riddle Database
+                    const riddleDatabase = {
+                        en: {
+                            easy: [
+                                { riddle: "What has keys but no locks, space but no room, and you can enter but not go in?", answer: "keyboard" },
+                                { riddle: "What gets wet while drying?", answer: "towel" }
+                            ],
+                            medium: [
+                                { riddle: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?", answer: "echo" },
+                                { riddle: "The more you take, the more you leave behind. What am I?", answer: "footsteps" }
+                            ],
+                            hard: [
+                                { riddle: "I am not alive, but I grow; I don't have lungs, but I need air; I don't have a mouth, but water kills me. What am I?", answer: "fire" }
+                            ]
+                        },
+                        es: {
+                            easy: [
+                                { riddle: "Tengo ciudades, pero no casas. Tengo montañas, pero no árboles. Tengo agua, pero no peces. ¿Qué soy?", answer: "mapa" }
+                            ],
+                            medium: [
+                                { riddle: "Cuanto más le quitas, más grande se hace. ¿Qué soy?", answer: "hoyo" }
+                            ],
+                            hard: [
+                                { riddle: "Siempre va hacia arriba, pero nunca baja. ¿Qué soy?", answer: "edad" }
+                            ]
+                        },
+                        fr: {
+                            easy: [
+                                { riddle: "Je suis plein de trous, mais je peux encore contenir de l'eau. Qui suis-je?", answer: "éponge" },
+                                { riddle: "Que peut voyager partout sans bouger?", answer: "image" }
+                            ],
+                            medium: [
+                                { riddle: "Plus on me prend, plus je suis grand. Qui suis-je?", answer: "trou" }
+                            ],
+                            hard: [
+                                { riddle: "Je suis quelque chose que vous pouvez attraper mais jamais jeter. Qui suis-je?", answer: "rhume" }
+                            ]
+                        }
+                    };
+
+                    const languageSelect = document.getElementById('languageSelect');
+                    const difficultySelect = document.getElementById('difficultySelect');
+                    const generateBtn = document.getElementById('generateBtn');
+                    const submitBtn = document.getElementById('submitBtn');
+                    const riddleText = document.getElementById('riddleText');
+                    const answerInput = document.getElementById('answerInput');
+                    const resultMessage = document.getElementById('resultMessage');
+
+                    let currentRiddle = null;
+
+                    function getRandomRiddle(language, difficulty) {
+                        const langRiddles = riddleDatabase[language][difficulty];
+                        return langRiddles[Math.floor(Math.random() * langRiddles.length)];
+                    }
+
+                    generateBtn.addEventListener('click', () => {
+                        const language = languageSelect.value;
+                        const difficulty = difficultySelect.value;
+                        
+                        currentRiddle = getRandomRiddle(language, difficulty);
+                        riddleText.textContent = currentRiddle.riddle;
+                        
+                        answerInput.style.display = 'block';
+                        submitBtn.style.display = 'inline-block';
+                        resultMessage.textContent = '';
+                        answerInput.value = '';
+                    });
+
+                    submitBtn.addEventListener('click', () => {
+                        if (!currentRiddle) return;
+
+                        const userAnswer = answerInput.value.toLowerCase().trim();
+                        const correctAnswer = currentRiddle.answer.toLowerCase();
+
+                        if (userAnswer === correctAnswer) {
+                            resultMessage.style.color = 'green';
+                            resultMessage.textContent = '🎉 Correct! You solved the riddle!';
+                        } else {
+                            resultMessage.style.color = 'red';
+                            resultMessage.textContent = `❌ Wrong answer. The correct answer was "${currentRiddle.answer}".`;
+                        }
+                    });
+                </script>
+            </section>
+
             <!-- Resume Section -->
             <section id="resume" class="my-5">
                 <h2>Resume</h2>
